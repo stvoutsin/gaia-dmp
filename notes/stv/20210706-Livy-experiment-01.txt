@@ -1,0 +1,193 @@
+#
+# <meta:header>
+#   <meta:licence>
+#     Copyright (c) 2021, ROE (http://www.roe.ac.uk/)
+#
+#     This information is free software: you can redistribute it and/or modify
+#     it under the terms of the GNU General Public License as published by
+#     the Free Software Foundation, either version 3 of the License, or
+#     (at your option) any later version.
+#
+#     This information is distributed in the hope that it will be useful,
+#     but WITHOUT ANY WARRANTY; without even the implied warranty of
+#     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#     GNU General Public License for more details.
+#
+#     You should have received a copy of the GNU General Public License
+#     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#   </meta:licence>
+# </meta:header>
+#
+
+
+# Targets
+# -----------------------
+  # Experiment with Livy
+
+
+
+
+# -----------------------------------------------------
+# Create a container to work with.
+#[user@desktop]
+
+    source "${HOME:?}/aglais.env"
+
+    docker run \
+        --rm \
+        --tty \
+        --interactive \
+        --name ansibler2 \
+        --hostname ansibler \
+        --env "SSH_AUTH_SOCK=/mnt/ssh_auth_sock" \
+        --volume "${SSH_AUTH_SOCK}:/mnt/ssh_auth_sock:rw,z" \
+        --volume "${HOME:?}/clouds.yaml:/etc/openstack/clouds.yaml:ro,z" \
+        --volume "${AGLAIS_CODE:?}/deployments:/deployments:ro,z" \
+        atolmis/ansible-client:2020.12.02 \
+        bash
+
+
+# -----------------------------------------------------
+# Set the target cloud to delete.
+#[root@ansibler]
+
+    cloudname=gaia-test
+
+
+
+# -----------------------------------------------------
+# Delete everything.
+#[root@ansibler]
+
+    time \
+        /deployments/openstack/bin/delete-all.sh \
+            "${cloudname:?}"
+
+
+	> Done
+
+# -----------------------------------------------------
+# Create everything, using a standard config.
+#[root@ansibler]
+
+    time \
+        /deployments/hadoop-yarn/bin/create-all.sh \
+            "${cloudname:?}" \
+            'medium-04'
+
+
+	> Done
+
+# -----------------------------------------------------
+# Fetch Apache Livy
+# [fedora@zeppelin]
+
+    wget https://www.apache.org/dyn/closer.lua/incubator/livy/0.7.1-incubating/apache-livy-0.7.1-incubating-bin.ziphttps://www.apache.org/dyn/closer.lua/incubator/livy/0.7.1-incubating/apache-livy-0.7.1-incubating-bin.zip
+
+    unzip apache-livy-0.7.1-incubating-bin.zip
+        ..
+
+	>  inflating: apache-livy-0.7.1-incubating-bin/jars/apache-jsp-8.0.33.jar  
+	>  inflating: apache-livy-0.7.1-incubating-bin/jars/jetty-schemas-3.1.jar  
+	>  inflating: apache-livy-0.7.1-incubating-bin/jars/hive-service-3.0.0.jar  
+	>  inflating: apache-livy-0.7.1-incubating-bin/jars/javassist-3.20.0-GA.jar
+
+# Install nano
+
+    sudo yum install -y nano
+ 
+# -----------------------------------------------------
+# Configure Livy
+# [fedora@zeppelin]
+
+
+# https://zeppelin.apache.org/docs/0.6.1/interpreter/livy.html
+# https://enterprise-docs.anaconda.com/en/latest/admin/advanced/config-livy-server.html
+
+
+pushd apache-livy-0.7.1-incubating-bin
+
+    cp conf/livy.conf.template conf/livy.conf
+
+    nano conf/livy.conf
+
+	livy.server.port = 8998
+	livy.spark.master = yarn
+	livy.spark.deployMode = client
+	livy.impersonation.enabled = false
+
+popd
+
+
+./bin/livy-server start
+
+starting /etc/alternatives/jre/bin/java  -cp /home/fedora/apache-livy-0.7.1-incubating-bin/jars/*:/home/fedora/apache-livy-0.7.1-incubating-bin/conf:/opt/hadoop/etc/hadoop: org.apache.livy.server.LivyServer, logging to /home/fedora/apache-livy-0.7.1-incubating-bin/logs/livy-fedora-server.out
+
+
+# -----------------------------------------------------
+# Login as user #1 and run a Livy notebook
+# [user@local]
+
+firefox http://128.232.227.242:8080/#/notebook/2GAB3Z2H2 & 
+
+%livy.spark
+sc.version
+
+> res0: String = 2.4.7
+
+Spark Application Id: application_1625574219118_0005
+Spark WebUI: http://master01:8088/proxy/application_1625574219118_0005/
+
+
+
+# After checking the Yarn UI, we see an application using 22.7% of the resources
+# This application has the following information associated with it:
+#	name: livy-session-1
+#       state: RUNNING
+#       allocated containers: 3
+
+
+
+
+%livy.pyspark
+print ("1")
+> 1
+
+
+Spark Application Id: application_1625574219118_0005
+Spark WebUI: http://master01:8088/proxy/application_1625574219118_0005/
+
+
+# Login as user #2 and try the same notebooks:
+
+%livy.pyspark
+print ("1")
+
+Spark Application Id: application_1625574219118_0006
+Spark WebUI: http://master01:8088/proxy/application_1625574219118_0006/
+
+
+# Second user's application is also using up 22.7% of the resources (same as first application/user)
+
+
+# -----------------------------------------------------
+# Run the Pi Calculation PySpark job as user #1
+# [user@local]
+
+%livy.pyspark
+
+NUM_SAMPLES=1000000000
+import random
+
+def inside(p):
+    x, y = random.random(), random.random()
+    return x*x + y*y < 1
+
+count = sc.parallelize(range(0, NUM_SAMPLES)) \
+             .filter(inside).count()
+print("Pi is roughly %f" % (4.0 * count / NUM_SAMPLES))
+
+> Pi is roughly 3.141655
+
+Took 1 min 13 sec. Last updated by admin at July 09 2021, 12:44:10 AM.
+
