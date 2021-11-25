@@ -207,6 +207,8 @@
             # List of users with their password allowed to access Zeppelin.
             admin = pass, admin
             gaiauser = gaiapass, role1
+            gaiauser2 = gaiapass2, role1
+            gaiauser3 = gaiapass3, role1
 
             [main]
 

@@ -51,7 +51,7 @@
 
   tasks:
 
-    - name: "Creating our Zeppelin config file"
+    - name: "Creating our Zeppelin config file for user #1"
       copy:
         dest: "/tmp/user.yml"
         content: |
@@ -60,6 +60,24 @@
           zeppelin_user: gaiauser
           zeppelin_password: gaiapass
 
+    - name: "Creating our Zeppelin config file for user #2"
+      copy:
+        dest: "/tmp/user1.yml"
+        content: |
+          zeppelin_url: http://{{ zepipaddress }}:8080
+          zeppelin_auth: true
+          zeppelin_user: gaiauser2
+          zeppelin_password: gaiapass2
+
+    - name: "Creating our Zeppelin config file for user #3"
+      copy:
+        dest: "/tmp/user2.yml"
+        content: |
+          zeppelin_url: http://{{ zepipaddress }}:8080
+          zeppelin_auth: true
+          zeppelin_user: gaiauser3
+          zeppelin_password: gaiapass3
+
     - name: "Install git"
       yum:
         name: git
@@ -67,17 +85,27 @@
         state: present
          
     - pip:
-        name: 'git+https://github.com/wfau/aglais-testing@v0.1.2'
+        name: 'git+https://github.com/wfau/aglais-testing@v0.1.4'
         executable: pip
 
-    - name: "Creating our Benchmarking script"
+    - name: "Creating our Benchmarking script for the Single User test"
       copy:
-        dest: "/tmp/run-test.py"
+        dest: "/tmp/run-single-user-test.py"
         content: |
           import sys
           from aglais_benchmark import AglaisBenchmarker
           AglaisBenchmarker("/deployments/zeppelin/test/config/notebooks.json", "/tmp/").run(concurrent=False, users=1)
 
-    - name: "Run benchmarker"
-      command: python3 /tmp/run-test.py
+    - name: "Creating our Benchmarking script for the Multi User test"
+      copy:
+        dest: "/tmp/run-multi-user-test.py"
+        content: |
+          import sys
+          from aglais_benchmark import AglaisBenchmarker
+          AglaisBenchmarker("/deployments/zeppelin/test/config/notebooks-public-multi-user.json", "/tmp/").run(concurrent=True, users=2)
 
+    - name: "Run Single User Test"
+      command: python3 /tmp/run-single-user-test.py
+
+    - name: "Run Multi User Test"
+      command: python3 /tmp/run-multi-user-test.py
