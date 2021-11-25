@@ -85,7 +85,7 @@
         state: present
          
     - pip:
-        name: 'git+https://github.com/wfau/aglais-testing@v0.1.4'
+        name: 'git+https://github.com/wfau/aglais-testing@v0.1.5'
         executable: pip
 
     - name: "Creating our Benchmarking script for the Single User test"
