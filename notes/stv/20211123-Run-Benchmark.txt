@@ -1,0 +1,144 @@
+#
+# <meta:header>
+#   <meta:licence>
+#     Copyright (c) 2021, ROE (http://www.roe.ac.uk/)
+#
+#     This information is free software: you can redistribute it and/or modify
+#     it under the terms of the GNU General Public License as published by
+#     the Free Software Foundation, either version 3 of the License, or
+#     (at your option) any later version.
+#
+#     This information is distributed in the hope that it will be useful,
+#     but WITHOUT ANY WARRANTY; without even the implied warranty of
+#     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#     GNU General Public License for more details.
+#
+#     You should have received a copy of the GNU General Public License
+#     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#   </meta:licence>
+# </meta:header>
+#
+
+
+    Target:
+
+        Run Benchmarks
+
+    Result:
+
+        Failed at first (Success, but slow after fix)
+
+
+# -----------------------------------------------------
+# Checkout the deployment branch.
+#[user@desktop]
+
+    source "${HOME:?}/aglais.env"
+    pushd "${AGLAIS_CODE}"
+
+            git checkout 'issue-benchmarking'
+
+    popd
+
+
+# -----------------------------------------------------
+# Create a container to work with.
+#[user@desktop]
+
+    source "${HOME:?}/aglais.env"
+
+    AGLAIS_CLOUD=gaia-test
+
+    docker run \
+        --rm \
+        --tty \
+        --interactive \
+        --name ansibler \
+        --hostname ansibler \
+        --env "SSH_AUTH_SOCK=/mnt/ssh_auth_sock" \
+        --volume "${SSH_AUTH_SOCK}:/mnt/ssh_auth_sock:rw,z" \
+        --env "cloudname=${AGLAIS_CLOUD:?}" \
+        --volume "${HOME:?}/clouds.yaml:/etc/openstack/clouds.yaml:ro,z" \
+        --volume "${AGLAIS_CODE:?}/deployments:/deployments:ro,z" \
+        atolmis/ansible-client:2021.08.25 \
+        bash
+
+
+# -----------------------------------------------------
+# Delete everything.
+#[root@ansibler]
+
+    time \
+        /deployments/openstack/bin/delete-all.sh \
+            "${cloudname:?}"
+
+> Done
+
+
+# -----------------------------------------------------
+# Create everything, using the cclake-medium-04 config.
+#[root@ansibler]
+
+    time \
+        /deployments/hadoop-yarn/bin/create-all.sh \
+            "${cloudname:?}" \
+            'cclake-medium-04' \
+            'test' 
+
+..
+
+
+
+TASK [Run benchmarker] **************************************************************************************************************************************************************************************
+changed: [localhost] => {"changed": true, "cmd": ["python3", "/tmp/run-test.py"], "delta": "2:04:30.303373", "end": "2021-11-23 12:39:05.541098", "rc": 0, "start": "2021-11-23 10:34:35.237725", "stderr": "", "stderr_lines": [], "stdout": "Test completed after: 7470.17 seconds\n{'SetUp': {'totaltime': '44.60', 'status': 'SUCCESS', 'msg': '', 'valid': 'TRUE'}, 'Mean_proper_motions_over_the_sky': {'totaltime': '69.72', 'status': 'SLOW', 'msg': '', 'valid': 'TRUE'}, 'Source_counts_over_the_sky.json': {'totaltime': '24.57', 'status': 'SLOW', 'msg': '', 'valid': 'TRUE'}, 'Good_astrometric_solutions_via_ML_Random_Forrest_classifier': {'totaltime': '537.43', 'status': 'SLOW', 'msg': '', 'valid': 'TRUE'}, 'QC_cuts_dev.json': {'totaltime': '6782.16', 'status': 'SLOW', 'msg': '', 'valid': 'TRUE'}, 'WD_detection_dev.json': {'totaltime': '11.69', 'status': 'ERROR', 'msg': ' .. 
+
+	.. 
+	  'Path does not exist: file:/user/dcr/data/eDR3_wd_full.csv;\\'', 
+	..
+
+'valid': 'TRUE'}}"]}
+
+
+
+PLAY RECAP **************************************************************************************************************************************************************************************************
+localhost                  : ok=9    changed=6    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+/
+
+real	171m1.879s
+user	33m47.921s
+sys	5m18.047s
+
+
+
+# After checking /user/dcr/data/ it looks like there is not eDR3_wd_full.csv, only the following files:
+
+  eDR3_old.csv 
+  edr3_WDs.csv  
+
+# It looks as if we have to rename the file in the notebook test to edr3_WDs.csv  
+
+
+# Fix and re-run  Test..
+# (Repeat delete & start commands above)
+
+..
+
+
+
+TASK [Run benchmarker] **************************************************************************************************************************************************************************************
+changed: [localhost] => {"changed": true, "cmd": ["python3", "/tmp/run-test.py"], "delta": "4:01:46.495183", "end": "2021-11-23 18:07:42.009848", "rc": 0, "start": "2021-11-23 14:05:55.514665", "stderr": "", "stderr_lines": [], "stdout": "Test completed after: 14506.34 seconds\n{'SetUp': {'totaltime': '39.45', 'status': 'SUCCESS', 'msg': '', 'valid': 'TRUE'}, 'Mean_proper_motions_over_the_sky': {'totaltime': '63.06', 'status': 'SLOW', 'msg': '', 'valid': 'TRUE'}, 'Source_counts_over_the_sky.json': {'totaltime': '19.22', 'status': 'SUCCESS', 'msg': '', 'valid': 'TRUE'}, 'Good_astrometric_solutions_via_ML_Random_Forrest_classifier': {'totaltime': '534.47', 'status': 'SLOW', 'msg': '', 'valid': 'TRUE'}, 'QC_cuts_dev.json': {'totaltime': '6574.03', 'status': 'SLOW', 'msg': '', 'valid': 'TRUE'}, 'WD_detection_dev.json': {'totaltime': '7276.10', 'status': 'SLOW', 'msg': '', 'valid': 'TRUE'}}", "stdout_lines": ["Test completed after: 14506.34 seconds", "{'SetUp': {'totaltime': '39.45', 'status': 'SUCCESS', 'msg': '', 'valid': 'TRUE'}, 'Mean_proper_motions_over_the_sky': {'totaltime': '63.06', 'status': 'SLOW', 'msg': '', 'valid': 'TRUE'}, 'Source_counts_over_the_sky.json': {'totaltime': '19.22', 'status': 'SUCCESS', 'msg': '', 'valid': 'TRUE'}, 'Good_astrometric_solutions_via_ML_Random_Forrest_classifier': {'totaltime': '534.47', 'status': 'SLOW', 'msg': '', 'valid': 'TRUE'}, 'QC_cuts_dev.json': {'totaltime': '6574.03', 'status': 'SLOW', 'msg': '', 'valid': 'TRUE'}, 'WD_detection_dev.json': {'totaltime': '7276.10', 'status': 'SLOW', 'msg': '', 'valid': 'TRUE'}}"]}
+
+PLAY RECAP **************************************************************************************************************************************************************************************************
+localhost                  : ok=9    changed=6    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+/
+
+real	289m9.332s
+user	59m28.138s
+sys	7m49.170s
+
+
+# Benchmarks now run successfully
+# Result: Passed but SLOW
+
