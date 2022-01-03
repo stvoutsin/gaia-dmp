@@ -41,7 +41,6 @@
 #      msg: "Ansible filter plugins [{{lookup('config', 'ANSIBLE_FILTER_PLUGINS')}}]"
 #   - debug:
 #      msg: "Ansible filter plugins [{{lookup('config', 'DEFAULT_FILTER_PLUGIN_PATH')}}]"
-
     - debug:
        msg: "Filter test [{{ 'FROG' | test_one() }}]"
 
@@ -58,14 +57,8 @@
 #     ansible.builtin.template:
 ##      src:  templates/config-test.j2
 #       dest: /tmp/config-test.conf
-
-
     - debug:
        msg: "Filter test [{{ test_config | test_one() }}]"
 
     - debug:
        msg: "Filter test [{{ test_config | test_two() }}]"
-
-
-
-

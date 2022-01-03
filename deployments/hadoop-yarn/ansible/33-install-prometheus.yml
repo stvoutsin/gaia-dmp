@@ -46,4 +46,3 @@
   become: true
   roles:
     - grafana
-

@@ -42,7 +42,7 @@
         state: present
         security_group: "{{ security['masters'] }}"
         direction: 'ingress'
-        protocol:  'tcp'
+        protocol: 'tcp'
         port_range_min: 8030
         port_range_max: 8033
 
@@ -54,7 +54,7 @@
         state: present
         security_group: "{{ security['masters'] }}"
         direction: 'ingress'
-        protocol:  'tcp'
+        protocol: 'tcp'
         port_range_min: 8088
         port_range_max: 8088
 
@@ -66,7 +66,7 @@
         state: present
         security_group: "{{ security['masters'] }}"
         direction: 'ingress'
-        protocol:  'tcp'
+        protocol: 'tcp'
         port_range_min: 8090
         port_range_max: 8090
 
@@ -78,7 +78,7 @@
         state: present
         security_group: "{{ security['masters'] }}"
         direction: 'ingress'
-        protocol:  'tcp'
+        protocol: 'tcp'
         port_range_min: 8141
         port_range_max: 8141
 
@@ -91,7 +91,7 @@
         state: present
         security_group: "{{ security['workers'] }}"
         direction: 'ingress'
-        protocol:  'tcp'
+        protocol: 'tcp'
         port_range_min: 45454
         port_range_max: 45454
 
@@ -103,7 +103,7 @@
         state: present
         security_group: "{{ security['workers'] }}"
         direction: 'ingress'
-        protocol:  'tcp'
+        protocol: 'tcp'
         port_range_min: 8040
         port_range_max: 8040
 
@@ -116,7 +116,7 @@
         state: present
         security_group: "{{ security['workers'] }}"
         direction: 'ingress'
-        protocol:  'tcp'
+        protocol: 'tcp'
         port_range_min: 8042
         port_range_max: 8042
 
@@ -128,7 +128,7 @@
         state: present
         security_group: "{{ security['workers'] }}"
         direction: 'ingress'
-        protocol:  'tcp'
+        protocol: 'tcp'
         port_range_min: 8044
         port_range_max: 8044
 
@@ -140,11 +140,9 @@
         state: present
         security_group: "{{ security['workers'] }}"
         direction: 'ingress'
-        protocol:  'tcp'
+        protocol: 'tcp'
         port_range_min: 8048
         port_range_max: 8048
-
-
 #
 # https://www.stefaanlippens.net/hadoop-3-default-ports.html
 #
@@ -220,8 +218,3 @@
 #   mapreduce.jobhistory.webapp.address            19888
 #   mapreduce.jobhistory.webapp.https.address      19890
 #   mapreduce.shuffle.port                         13562
-
-
-
-
-

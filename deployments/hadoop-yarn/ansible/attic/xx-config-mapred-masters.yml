@@ -47,7 +47,7 @@
     - name: "Configure [{{hdhome}}/etc/hadoop/mapred-site.xml]"
       become: true
       blockinfile:
-        path:   "{{hdhome}}/etc/hadoop/mapred-site.xml"
+        path: "{{hdhome}}/etc/hadoop/mapred-site.xml"
         marker: "<!-- {mark} Ansible managed MapReduce worker config -->"
         insertbefore: "</configuration>"
         block: |
@@ -159,5 +159,3 @@
                 <name>mapreduce.reduce.memory.mb</name>
                 <value>7000</value>
             </property>
-
-

@@ -30,13 +30,12 @@
 
     - name: "Discover our Zeppelin node and store IP address in temp file"
       os_server_info:
-        cloud:  "{{ cloudname }}"
+        cloud: "{{ cloudname }}"
         server: "{{ deployname }}-zeppelin"
       register:
         zeppelinnode
 
     - local_action: copy content={{ zeppelinnode.openstack_servers[0].accessIPv4 }} dest=/tmp/zeppelin_ip.txt
-
 
 - name: "Install and run Python benchmark suite"
   hosts: localhost
@@ -80,4 +79,3 @@
 
     - name: "Run benchmarker"
       shell: python3 /tmp/run-test.py | tee /tmp/test-result.json
-

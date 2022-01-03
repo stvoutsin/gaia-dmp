@@ -53,7 +53,7 @@
     - name: "Create a symlink for the Hadoop version"
       become: true
       file:
-        src:  "{{hdname}}"
+        src: "{{hdname}}"
         path: "{{hdhome}}"
         state: link
 
@@ -75,11 +75,11 @@
     - name: "Create [/etc/profile.d/hadoop.sh]"
       become: true
       blockinfile:
-        dest:  '/etc/profile.d/hadoop.sh'
+        dest: '/etc/profile.d/hadoop.sh'
         state: present
         owner: 'root'
         group: 'root'
-        mode:  'u=rw,g=r,o=r'
+        mode: 'u=rw,g=r,o=r'
         create: yes
         insertafter: 'EOF'
         marker: '# {mark} Ansible managed configuration'
