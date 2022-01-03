@@ -15,11 +15,11 @@ jobs:
         uses: ibiqlik/action-yamllint@master
         with:
           config_file: ".yamllint.yml"
+          yamllint_file_or_dir: 'deployments'
+          yamllint_strict: false
+          yamllint_comment: true
 
-      - name: Install test dependencies
-        run: pip install -r deployments/common/pip/requirements.txt
-
-  build:
+  pip-install:
     runs-on: ubuntu-latest
     strategy:
       matrix:
