@@ -256,7 +256,7 @@
       unarchive:
         src: "https://downloads.apache.org/zeppelin/{{zepname}}/{{zepname}}-bin-all.tgz"
         dest: "{{zepbase}}"
-        remote_src: yes
+        remote_src: true
 
     - name: "Create [/etc/profile.d/zeppelin.sh]"
       become: true

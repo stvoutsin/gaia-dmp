@@ -88,7 +88,7 @@
         name: "{{ deployname }}-monitor"
         image: "{{ hostvars['monitor'].image }}"
         flavor: "{{ hostvars['monitor'].flavor }}"
-        network:"{{ networks['internal'] }}"
+        network: "{{ networks['internal'] }}"
         key_name: "{{ sshkeys }}"
         auto_ip: no
         meta:

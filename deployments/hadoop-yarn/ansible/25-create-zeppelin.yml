@@ -91,13 +91,13 @@
         cloud: "{{ cloudname }}"
         state: present
         name: "{{ deployname }}-zeppelin"
-        image: "{{ hostvars['zeppelin'].image  }}"
+        image: "{{ hostvars['zeppelin'].image }}"
         flavor: "{{ hostvars['zeppelin'].flavor }}"
         network: "{{ networks['internal'] }}"
         key_name: "{{ sshkeys }}"
         auto_ip: false
         meta:
-            hostname: 'zeppelin'
+          hostname: 'zeppelin'
         security_groups:
           - "{{ zeppelinsec.id }}"
       register:
