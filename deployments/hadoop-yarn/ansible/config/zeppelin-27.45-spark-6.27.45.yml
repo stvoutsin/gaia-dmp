@@ -158,15 +158,15 @@ all:
                 image: 'Fedora-30-1.2'
                 flavor: "{{workerflavor}}"
                 discs:
-                  - type: 'local'
-                    format: 'ext4'
-                    mntpath: "/mnt/local/vdb"
-                    devname: 'vdb'
-                  - type: 'cinder'
-                    size: 1024
-                    format: 'btrfs'
-                    mntpath: "/mnt/cinder/vdc"
-                    devname: 'vdc'
+                    - type: 'local'
+                      format: 'ext4'
+                      mntpath: "/mnt/local/vdb"
+                      devname: 'vdb'
+                    - type: 'cinder'
+                      size: 1024
+                      format: 'btrfs'
+                      mntpath: "/mnt/cinder/vdc"
+                      devname: 'vdc'
                 paths:
                     # Used on workers
                     hddatalink: "/var/hadoop/data"

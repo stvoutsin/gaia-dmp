@@ -33,12 +33,12 @@
 
   tasks:
 
-    #    - debug:
-    #       msg: "Ansible library [{{lookup('env', 'ANSIBLE_LIBRARY')}}]"
-    #   - debug:
-    #      msg: "Ansible filter plugins [{{lookup('config', 'ANSIBLE_FILTER_PLUGINS')}}]"
-    #   - debug:
-    #      msg: "Ansible filter plugins [{{lookup('config', 'DEFAULT_FILTER_PLUGIN_PATH')}}]"
+  # - debug:
+  #     msg: "Ansible library [{{lookup('env', 'ANSIBLE_LIBRARY')}}]"
+  # - debug:
+  #     msg: "Ansible filter plugins [{{lookup('config', 'ANSIBLE_FILTER_PLUGINS')}}]"
+  # - debug:
+  #     msg: "Ansible filter plugins [{{lookup('config', 'DEFAULT_FILTER_PLUGIN_PATH')}}]"
     - debug:
         msg: "Filter test [{{ 'FROG' | test_one() }}]"
 
