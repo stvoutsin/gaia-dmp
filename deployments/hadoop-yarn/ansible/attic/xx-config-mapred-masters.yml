@@ -85,7 +85,7 @@
                 | specified as a comma separated list.
                 | Example:
                 | VAR1=value1,VAR2=value2
-                | 
+                |
                 | To define environment variables individually, you can specify
                 | multiple properties of the form mapreduce.map.env.VARNAME,
                 | where VARNAME is the name of the environment variable. This is the only
@@ -105,7 +105,7 @@
                 | specified as a comma separated list.
                 | Example:
                 | VAR1=value1,VAR2=value2
-                | 
+                |
                 | To define environment variables individually, you can specify
                 | multiple properties of the form mapreduce.reduce.env.VARNAME,
                 | where VARNAME is the name of the environment variable. This is the only

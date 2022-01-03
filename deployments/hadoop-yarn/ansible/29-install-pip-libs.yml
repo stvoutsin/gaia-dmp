@@ -31,10 +31,10 @@
   tasks:
 
     - name: "Install required system libraries"
-      become: yes
+      become: true
       yum:
         name: libtiff-devel,libjpeg-devel,libzip-devel,freetype-devel,lcms2-devel,libwebp-devel,tcl-devel,tk-devel
-        update_cache: yes
+        update_cache: true
         state: present
 
     - name: Copy pip requirements file into tmp
