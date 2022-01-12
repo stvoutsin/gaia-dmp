@@ -92,4 +92,3 @@
           export HADOOP_CONF_DIR={{hdconf}}
           export HADOOP_LOG_DIR={{hdlogslink}}
 
-

@@ -251,8 +251,6 @@
 
             /** = authc
 
-
-
   tasks:
     - name: "Install Zeppelin"
       unarchive:
@@ -276,7 +274,6 @@
           export HADOOP_CONF_DIR={{hdhome}}/etc/hadoop
           export MASTER=yarn-client
 
-
     - name: "Create [{{zephome}}/conf/zeppelin-env.sh]"
       become: true
       blockinfile:
@@ -292,7 +289,6 @@
           export HADOOP_CONF_DIR={{hdhome}}/etc/hadoop
           export MASTER=yarn-client
 
-
     - name: "Create a Zeppelin configuration"
       copy:
         owner: "{{zepuser}}"
@@ -302,7 +298,6 @@
         content: "{{ zeppelinconfig }}"
       tags:
         - always
-
 
     - name: "Create a Zeppelin Shiro Configuration"
       copy:
@@ -314,7 +309,6 @@
       tags:
         - always
 
-
     - name: "Create Zeppelin Maven directory"
       become: true
       file:
@@ -323,5 +317,4 @@
         owner: "{{zepuser}}"
         group: "{{zepuser}}"
         mode: 0775
-
 

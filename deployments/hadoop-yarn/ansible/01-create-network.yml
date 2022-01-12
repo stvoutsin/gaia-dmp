@@ -34,7 +34,7 @@
         cloud: "{{ cloudname }}"
         state: present
         name: "{{ networks['internal'] }}"
-        shared:   'no'
+        shared: 'no'
         external: 'no'
       register:
         agnetwork
@@ -62,5 +62,4 @@
             subnet: "{{ agsubnet.subnet.name }}"
       register:
         agrouter
-
 

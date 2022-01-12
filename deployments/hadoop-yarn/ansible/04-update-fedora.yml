@@ -45,10 +45,9 @@
       become: true
       dnf:
         name:
-        - 'jq'
-        - 'atop'
-        - 'htop'
-        - 'wget'
+          - 'jq'
+          - 'atop'
+          - 'htop'
+          - 'wget'
         state: present
-
 

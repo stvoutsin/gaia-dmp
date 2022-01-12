@@ -33,7 +33,7 @@
     state: absent
 
 - name: Creates directory
-  file: 
+  file:
     path: "/data/prometheus/"
     state: directory
     owner: "{{prometheus_userId}}"
@@ -41,7 +41,7 @@
     mode: 0755
 
 - name: Creates directory
-  file: 
+  file:
     path: "/etc/prometheus/"
     state: directory
     owner: "{{prometheus_userId}}"
