@@ -16,4 +16,3 @@ receivers:
   slack_configs:
   - channel: "#webhook-test"
     text: "summary: {{ .CommonAnnotations.summary }}\ndescription: {{ .CommonAnnotations.description }}"
-
