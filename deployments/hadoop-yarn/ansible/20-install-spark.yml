@@ -59,4 +59,3 @@
         block: |
           export SPARK_HOME={{sphome}}
           export PATH=${PATH}:{{sphome}}/bin
-

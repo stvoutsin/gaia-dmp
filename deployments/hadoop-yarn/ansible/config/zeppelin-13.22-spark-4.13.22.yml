@@ -181,4 +181,3 @@ all:
                     # Empty on workers
                     hdfsdatalink: "/var/hdfs/data"
                     hdfsdatadest: "/mnt/cinder/vdc/hdfs/data"
-

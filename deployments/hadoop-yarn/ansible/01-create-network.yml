@@ -62,4 +62,3 @@
             subnet: "{{ agsubnet.subnet.name }}"
       register:
         agrouter
-

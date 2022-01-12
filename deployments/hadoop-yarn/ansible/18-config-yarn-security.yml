@@ -218,4 +218,3 @@
         protocol:  'tcp'
         port_range_min: 8048
         port_range_max: 8048
-

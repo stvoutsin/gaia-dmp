@@ -101,4 +101,3 @@
         direction: 'ingress'
         protocol:  'tcp'
         remote_group: "{{ security['workers'] }}"
-

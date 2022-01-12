@@ -37,4 +37,3 @@ security:
     masters:  "{{ deployname }}-master-security"
     workers:  "{{ deployname }}-worker-security"
     monitor:  "{{ deployname }}-monitor-security"
-

@@ -79,4 +79,3 @@
         marker: '# {mark} Ansible managed Python'
         block: |
           alias python=python3
-

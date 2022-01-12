@@ -120,4 +120,3 @@
         name: '{{ zeppelinip.floating_ip.port }}'
         security_groups:
           - "{{ zeppelinsec.id }}"
-

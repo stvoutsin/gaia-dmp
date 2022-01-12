@@ -66,4 +66,3 @@
         "{{ groups['masters'] }}"
       register:
         masternodes
-

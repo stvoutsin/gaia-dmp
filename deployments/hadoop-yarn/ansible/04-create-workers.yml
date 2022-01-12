@@ -66,4 +66,3 @@
         "{{ groups['workers'] }}"
       register:
         workernodes
-

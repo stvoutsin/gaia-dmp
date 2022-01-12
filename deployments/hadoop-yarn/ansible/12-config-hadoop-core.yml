@@ -70,4 +70,3 @@
                 <name>hadoop.tmp.dir</name>
                 <value>{{hdtemplink}}</value>
             </property>
-

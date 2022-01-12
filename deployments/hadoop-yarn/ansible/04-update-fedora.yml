@@ -50,4 +50,3 @@
           - 'htop'
           - 'wget'
         state: present
-

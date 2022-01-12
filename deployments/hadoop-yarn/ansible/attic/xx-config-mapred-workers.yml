@@ -159,4 +159,3 @@
                 <name>mapreduce.reduce.memory.mb</name>
                 <value>7000</value>
             </property>
-

@@ -65,4 +65,3 @@
         dest: "{{ sshdir }}/config"
         state: link
       when: filestat.stat.exists == false
-

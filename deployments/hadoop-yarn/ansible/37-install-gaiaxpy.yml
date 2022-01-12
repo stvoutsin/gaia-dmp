@@ -36,4 +36,3 @@
     - name: Install GaiaXPy
       become: true
       command: "pip3 install /opt/software/GaiaXPy/"
-

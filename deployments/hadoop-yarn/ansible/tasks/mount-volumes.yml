@@ -51,5 +51,3 @@
     path:   "{{disc.mntpath}}"
     fstype: "{{disc.format}}"
     state:  mounted
-
-

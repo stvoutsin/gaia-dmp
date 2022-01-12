@@ -33,21 +33,21 @@
 
   tasks:
 
-    - debug:
-       msg: "Filter test [{{ 'FROG' | test_one() }}]"
 
     - debug:
-       msg: "Filter test [{{ 'FROG' | test_two() }}]"
+        msg: "Filter test [{{ 'FROG' | test_one() }}]"
 
     - debug:
-       msg: "Vars test [{{ my_flowers }}]"
+        msg: "Filter test [{{ 'FROG' | test_two() }}]"
 
     - debug:
-       msg: "Vars test [{{ my_entities }}]"
+        msg: "Vars test [{{ my_flowers }}]"
 
     - debug:
-       msg: "Filter test [{{ test_config | test_one() }}]"
+        msg: "Vars test [{{ my_entities }}]"
 
     - debug:
-       msg: "Filter test [{{ test_config | test_two() }}]"
+        msg: "Filter test [{{ test_config | test_one() }}]"
 
+    - debug:
+        msg: "Filter test [{{ test_config | test_two() }}]"
