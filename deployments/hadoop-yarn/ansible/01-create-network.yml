@@ -34,7 +34,7 @@
         cloud: "{{ cloudname }}"
         state: present
         name: "{{ networks['internal'] }}"
-        shared: 'no'
+        shared:   'no'
         external: 'no'
       register:
         agnetwork
