@@ -97,7 +97,7 @@
         key_name: "{{ sshkeys }}"
         auto_ip: no
         meta:
-            hostname: 'zeppelin'
+          hostname: 'zeppelin'
         security_groups:
           - "{{ zeppelinsec.id }}"
       register:
