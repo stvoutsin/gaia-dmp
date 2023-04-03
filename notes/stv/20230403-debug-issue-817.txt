@@ -1,0 +1,97 @@
+#
+# <meta:header>
+#   <meta:licence>
+#     Copyright (c) 2023, ROE (http://www.roe.ac.uk/)
+#
+#     This information is free software: you can redistribute it and/or modify
+#     it under the terms of the GNU General Public License as published by
+#     the Free Software Foundation, either version 3 of the License, or
+#     (at your option) any later version.
+#
+#     This information is distributed in the hope that it will be useful,
+#     but WITHOUT ANY WARRANTY; without even the implied warranty of
+#     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#     GNU General Public License for more details.
+#
+#     You should have received a copy of the GNU General Public License
+#     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#   </meta:licence>
+# </meta:header>
+#
+
+
+# Looking into issue
+
+https://github.com/wfau/gaia-dmp/issues/817
+
+
+# From local
+
+ssh -L '8088:master01:8088' fedora@dmp.gaia.ac.uk
+
+
+ > 6 Unhealthy nodes
+
+# Check master logs under /var/hadoop/logs & Yarn UI
+
+2023-03-28 22:12:51,910 INFO org.apache.hadoop.yarn.server.resourcemanager.rmnode.RMNodeImpl: Node worker02:43349 reported UNHEALTHY with details: 1/1 local-dirs usable space is below configured utilization percentage/no more usable space [ /var/hadoop/data : used space above threshold of 90.0% ] ; 1/1 log-dirs usable space is below configured utilization percentage/no more usable space [ /var/hadoop/logs : used space above threshold of 90.0% ] 
+...
+
+
+# Relevant error, also appears under Yarn UI
+1/1 local-dirs usable space is below configured utilization percentage/no more usable space [ /var/hadoop/data : used space above threshold of 90.0% ] ; 1/1 log-dirs usable space is below configured utilization percentage/no more usable space [ /var/hadoop/logs : used space above threshold of 90.0% ]
+
+
+
+# So we are running out of space on /var/hadoop/data
+# Double check available space on one of the worker nodes
+
+
+
+# Check worker01 usage
+ssh worker01
+
+..
+/dev/vdb                                                                                                  177G  158G  9.5G  95% /mnt
+...
+
+
+# Note, we only have 177G available temp space/
+
+
+ls -al /var/hadoop/
+
+drwxr-xr-x.  2 fedora fedora 4096 Mar  8 14:01 .
+drwxr-xr-x. 20 root   root   4096 Mar  8 14:03 ..
+lrwxrwxrwx.  1 fedora fedora   26 Mar  8 14:00 data -> /mnt/local/vdb/hadoop/data
+lrwxrwxrwx.  1 fedora fedora   26 Mar  8 14:00 logs -> /mnt/local/vdb/hadoop/logs
+lrwxrwxrwx.  1 fedora fedora   26 Mar  8 14:01 temp -> /mnt/local/vdb/hadoop/temp
+
+
+# So we only have one mount for all three of hadoop/data hadoop/logs & hadoop/temp
+# It's the data directory that is getting filled.
+# As far as I've seen, this is temporary "spillover" data that is produced from one of Dcr's notebooks, where the data cannot fit into memory, and is too big for the 180Gb disk
+
+
+ssh master01
+
+# Restart DFS
+
+stop-all.sh
+start-all.sh
+
+
+# Check yarn UI
+ # .. All nodes healthy
+
+
+
+# Check worker01 usage
+ssh worker01
+..
+/dev/vdb                                                                                                  177G  158G  9.5G  95% /mnt
+..
+
+
+
+# Long term fix: We need to increase the available disk space for the hadoop/data directory per worker node
