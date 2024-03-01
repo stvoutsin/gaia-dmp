@@ -521,7 +521,7 @@
       "properties": {
         "markdown.parser.type": {
           "name": "markdown.parser.type",
-          "value": "flexmark",
+          "value": "markdown4j",
           "type": "string",
           "description": "Markdown Parser Type. Available values: pegdown, markdown4j, flexmark. Default \u003d flexmark"
         }

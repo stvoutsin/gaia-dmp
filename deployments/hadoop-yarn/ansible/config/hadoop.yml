@@ -21,7 +21,7 @@
 #
 
 # Hadoop vars
-hdname: "hadoop-3.2.1"
+hdname: "hadoop-3.3.0"
 hdbase: "/opt"
 hdhome: "/opt/hadoop"
 
